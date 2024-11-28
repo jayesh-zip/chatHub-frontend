@@ -52,6 +52,12 @@ const Chat = ({ chatId, user }) => {
 
   const chatDetails = useChatDetailsQuery({ chatId, skip: !chatId });
 
+  const isGroupChat = chatDetails.isLoading ? false : chatDetails?.data?.chat?.isGroupChat || false;
+  console.log("Chat Details:", chatDetails);
+console.log("isGroupChat:", isGroupChat);
+
+
+
   const oldMessagesChunk = useGetMessagesQuery({ chatId, page });
 
   const { data: oldMessages, setData: setOldMessages } = useInfiniteScrollTop(
@@ -196,7 +202,7 @@ const Chat = ({ chatId, user }) => {
         }}
       >
         {allMessages.map((i) => (
-          <MessageComponent key={i._id} message={i} user={user} />
+          <MessageComponent key={i._id} message={i} user={user} isGroupChat={isGroupChat} members={members} />
         ))}
 
         {userTyping && <TypingLoader />}

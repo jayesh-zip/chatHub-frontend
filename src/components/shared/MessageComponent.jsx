@@ -6,7 +6,7 @@ import { fileFormat } from "../../lib/features";
 import RenderAttachment from "./RenderAttachment";
 import { motion } from "framer-motion";
 
-const MessageComponent = ({ message, user }) => {
+const MessageComponent = ({ message, user, isGroupChat, members }) => {
   const { sender, content, attachments = [], createdAt } = message;
 
   const sameSender = sender?._id === user?._id;
@@ -26,9 +26,17 @@ const MessageComponent = ({ message, user }) => {
         width: "fit-content",
       }}
     >
-      {!sameSender && (
+      {/* {!sameSender && (
         <Typography color={lightBlue} fontWeight={"600"} variant="caption">
           {sender.name}
+        </Typography>
+      )} */}
+
+      {!sameSender && (
+        <Typography color={lightBlue} fontWeight={"600"} variant="caption">
+          {isGroupChat 
+            ? sender?.name // Show sender name in group chats
+            : members?.find((member) => member !== user._id)?.name || "Unknown"} {/* Show other participant's name in individual chat */}
         </Typography>
       )}
 
